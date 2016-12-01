@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Log all the Things</title>
+  <meta name="description" content="A presentation on logging">
+  <meta name="author" content="David James Humphreys">
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="css/octicons.css"/>
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/simple.css" id="theme">
+  <link rel="stylesheet" href="css/zenburn.css">
+
+  <style>
+    .reveal .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      display: none;
+      -webkit-box-shadow: none;
+      border: 0;
+    }
+  </style>
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+  <!--[if lt IE 9]>
+  <script src="js/lib/html5shiv.js"></script><![endif]-->
+</head>
+
+<body>
+<div class="reveal">
+  <div class="slides">
+    <section id="title" class="present" style="top: 127px; display: block;">
+      <h2>LOG ALL THE THINGS</h2>
+      <p>
+        <small>David James Humphreys [<a href="http://twitter.com/davidjumphreys">@davidjhumphreys</a>]</small>
+        <br>
+        <small><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/davidjameshumphreys/demos/log-all
+          [<a href="https://davidjameshumphreys.github.io/demos/log-all/">slides</a>]
+        </small>
+      </p>
+    </section>
+    <section id="all-the-things">
+      <img src="images/log-all-the-things.jpg" alt="For my Ops team">
+    </section>
+    <section id="direction">
+      <h2>Good logs will save you</h2>
+      <ul>
+        <li>Tests are good</li>
+        <li>Integration tests are great</li>
+        <li>Logs are vital</li>
+      </ul>
+      <aside class="notes">
+        <pre>
+can show you where your app is going.
+        </pre>
+      </aside>
+    </section>
+    <section>
+      <h2>Logs are your guide</h2>
+      <img src="images/standing-cat.gif"/>
+    </section>
+    <section>
+      <p><img src="images/todo.jpg" alt="I have a todo pile"></p>
+      <p>There is always something else to fix</p>
+      <aside class="notes"><pre>
+under pressure
+drop features to make a release
+"nice to have features" drop further
+</pre></aside>
+    </section>
+    <section><h2 id="tech-debt">This is Tech Debt</h2>
+      <p>Do you know what your app is doing?</p>
+      <p style="font-size: 50%;">like your kids</p>
+
+      <aside class="notes">
+<pre>
++ poor names,
++ lack of test coverage,
++ function signatures,
++ global state
+</pre>
+      </aside>
+    </section>
+    <section id="measurable-tech-debt"><h2>Measurable Tech Debt</h2>
+      <p><img src="images/green-david.jpg" alt=""></p>
+      <aside class="notes"><pre>
+Measurable
+      </pre></aside>
+    </section>
+    <section><h2 id="set-some-goals">Set some goals</h2>
+      <ul>
+        <li>Read them</li>
+        <li>Search &amp; filter them</li>
+        <li>Respond to them</li>
+        <li>Calibrate them</li>
+        <li>Unify them</li>
+      </ul>
+      <aside class="notes"><pre>
+
+      </pre></aside>
+    </section>
+    <section>
+      <h2 id="developer-focussed">Developer-focussed</h2>
+      <p><img src="images/john-mccarthy.jpg"/></p>
+    </section>
+    <section>
+      <h2 id="stack">Stack</h2>
+      <p><img src="images/stack.jpeg" alt="what's your stack?"></p>
+      <aside class="notes"><pre>
+A lot of the container services are taking the decisions out of the applications
+Going with the simple 12-factor approach of just using stdout
+      </pre></aside>
+    </section>
+    <section id="buy-v-build">
+      <h2>Buy v Build</h2>
+      <img src="images/buy-v-build.jpg">
+      <aside class="notes"><pre>
+Buy: monitoring, graphing
+Cost: usage, throughput.
+      </pre></aside>
+    </section>
+    <section>
+      <h2 id="death-taxes">Death &amp; Taxes</h2>
+      <aside class="notes">Okay, there are some unavoidable things in development.
+
+        When writing code we have to think of the larger world that our code
+        will interact with.
+      </aside>
+    </section>
+    <section>
+      <h2 id="failure-is-always-an-option">Failure is always an option</h2>
+      <ul>
+        <li>Your app has bugs</li>
+        <li>Your network will fail</li>
+        <li>Services will fail</li>
+      </ul>
+      <aside class="notes">Monoliths, microservices and anything in-between; they will all
+        suffer.
+
+        Tests can only cover so much. Once your application is in the wild and
+        running, you need to have decent context to recreate any problems.
+
+        This doesn't have to mean failure only. If you rely on another system
+        for data. You might want to know that you got the right data.
+      </aside>
+    </section>
+    <section>
+      <h2 id="weird-is-normal">Weird is normal</h2>
+      <p>Plan accordingly</p>
+      <aside class="notes">Things might seem to work okay, but anomalies happen.
+        Your app might recover, but having log events to look back over.
+
+        Things can be slow too, sometimes just being able to see that happen
+        is a great help.
+      </aside>
+    </section>
+    <section>
+      <h2 id="embrace-change">Embrace change</h2>
+      <p>Don't fear it</p>
+      <aside class="notes">Having good logs gives confidence when changing something large.
+        See in tail the logs to get an idea if it is working.
+      </aside>
+    </section>
+    <section>
+      <h2 id="transactional-">Transactional?</h2>
+      <p>Be prepared to lose messages</p>
+      <aside class="notes">Logs should be seen as an event stream, but not transactional. If you
+        are worried about losing the data in your logs then it should be
+        transacted to some other data storage like your database.
+
+        Of course, we are talking about a tiny percentage of the overall
+        stream. But you should be prepared and know that it may happen.
+      </aside>
+    </section>
+    <section>
+      <h2 id="utc">UTC</h2>
+      <p>No timezones please</p>
+      <aside class="notes">iso8601
+        can use your local timezone to view
+        This doesn't affect us too much in good ol' Blighty except for summertime.
+      </aside>
+    </section>
+    <section>
+      <h2 id="structural-logging">Structural logging</h2>
+      <p>Instead of the standard</p>
+      <p><code>16-11-13 17:01:11 host DEBUG [logging.configuration:1] - {:moar "data"}</code></p>
+      <p> try out:</p>
+<pre><code>{:time "2016-11-13T17:01:11Z"
+ :level "DEBUG"
+ :host "host"
+ :ns "logging.configuration"
+ :line "1"
+ :message {:moar "data"}}
+</code></pre>
+      <aside class="notes">I've pretty-printed this data.
+
+        The top one is better for grepping and tailing live logs, but the
+        bottom is probably better for ingesting into other systems.
+      </aside>
+    </section>
+    <section>
+      <h2 id="one-line">One line</h2>
+      <p>Each line as one event</p>
+      <aside class="notes"></aside>
+    </section>
+    <section>
+      <h2 id="json">JSON</h2>
+      <p>JSON won</p>
+      <p>There are JSON appenders for most libraries</p>
+      <ul>
+        <li><a href="https://github.com/michaeltandy/log4j-json"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/michaeltandy/log4j-json</a></li>
+        <li><a href="https://github.com/logstash/logstash-logback-encoder"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/logstash/logstash-logback-encoder</a></li>
+      </ul>
+      <aside class="notes">Yes, just deal with it.
+        Unless you want to run your own Riemann (another talk altogether)
+        If you gonna go with a paid service for your needs, then dump out JSON
+      </aside>
+    </section>
+    <section>
+      <h2 id="context">Context</h2>
+      <ul>
+        <li>Use a consistent key.
+          <ul>
+            <li><code>:event ::open-pod-bay-doors</code></li>
+            <li><code>:action ::open-pod-bay-doors</code></li>
+          </ul>
+        </li>
+      </ul>
+      <p>Log it all the time (with a namespace)</p>
+      <aside class="notes"><pre>
+tell a story
+ns to know where to look</pre></aside>
+    </section>
+    <section id="application-context">
+      <h2>Application context</h2>
+      <ul>
+        <li>The app version</li>
+        <li>The instance</li>
+        <li>The feature flags</li>
+      </ul>
+      <aside class="notes">Distributed</aside>
+    </section>
+    <section>
+      <h2>Request context</h2>
+      <p>If you are dealing with requests</p>
+      <ul>
+        <li>Choose some unique id</li>
+        <li>Thread through each fn to log</li>
+      </ul>
+    </section>
+    <section>
+      <h2 id="stacktrace">StackTrace</h2>
+      <p>Save your screen!</p>
+      <aside class="notes">What do you want from your StackTrace? You probably want to know the
+        message; the failure site and then all of your files involved.
+
+        Filter your stacktraces so that you don't have to wade through pages
+        of frames just to find your original callsite.
+      </aside>
+    </section>
+    <section>
+      <h2 id="stacktrace-data">StackTrace data</h2>
+<pre><code>(require '[io.aviso.exception :as ex])
+(binding [ex/*fonts* nil]
+  (ex/analyze-exception
+    exception-maybe-has-ex-data
+    nil))
+</code></pre>
+      <p><a href="https://github.com/AvisoNovate/pretty"><span class="octicon octicon-mark-github"
+                                                               style="font-family: 'octicons';"></span>/AvisoNovate/pretty</a>
+      </p>
+      <aside class="notes">Okay, so the default behaviour is to output colour escape characters
+        that make it a bit harder to read, but just turning them off will give
+        you a lovely datastructure.
+
+        See also, <code>*default-frame-filter*</code> to elide unwanted frames.
+      </aside>
+    </section>
+    <section>
+      <h2 id="stacktrace-data">StackTrace data</h2>
+<pre><code class="lang-clojure">[{:class-name "java.lang.Exception" :message "ouch"
+  :properties {} :stack-trace nil}
+  {:class-name "clojure.lang.ExceptionInfo",
+   :message "terrible things",
+   :properties {:data-value 7} ;; &lt;- ex-data
+   :stack-trace [maps]}]
+</code></pre>
+      <aside class="notes"></aside>
+    </section>
+    <section>
+      <h2 id="exceptioninfo">ExceptionInfo</h2>
+<pre><code>(ex-info "I can't!"
+  {:event ::open-doors
+  :pod-doors :open
+  :service "HAL9000"} cause)
+</code></pre>
+      <aside class="notes">If you are going to throw an exception, you should try to use
+        <code>ex-info</code>.
+
+        This Clojure-specific <code>Exception</code> class allows you to attach data,
+        this can be your context data.
+
+        What will help you to diagnose the reason for the exception.
+
+        It works especially well with the stacktrace as data approach.
+      </aside>
+    </section>
+    <section>
+      <h2 id="uncaught-exceptions">Uncaught Exceptions</h2>
+<pre><code>
+(Thread/setDefaultUncaughtExceptionHandler
+   (reify Thread$UncaughtExceptionHandler
+     (uncaughtException [_this _thread e]
+       (log/error e))))
+</code></pre>
+      <aside class="notes">(Haskell people please don't troll us)
+        When initialising your application, you should add this code as soon as your logging is configured.
+      </aside>
+    </section>
+    <section>
+      <h2 id="shutdown-logging">Shutdown logging</h2>
+<pre><code>
+(.. (Runtime/getRuntime)
+    (addShutdownHook (Thread. #(log/info "kthxbai"))))
+</code></pre>
+      <aside class="notes">no guarantees</aside>
+    </section>
+    <section>
+      <h2 id="jvm-logging">JVM logging</h2>
+      <p><img src="images/standards.png" alt=""></p>
+      <aside class="notes">With apologies to <a href="https://xkcd.com/927/">https://xkcd.com/927/</a>
+        In the JVM world there are a lot of log libraries to choose
+        from.
+
+        But many of them suffer from some minor irritations.
+
+        (If they work for you keep going)
+
+        It's easy to fall into the trap of using whatever library wins the
+        classloading war -- don't do it! Make your own choice.
+      </aside>
+    </section>
+    <section>
+      <h2 id="classloading">Classloading</h2>
+      <p>First wins usually</p>
+      <aside class="notes">You will need to sort out your classloading. If you happen to already
+        include one of the main JVM libraries through a dependency then you
+        will see it boot up looking for your configuration.
+      </aside>
+    </section>
+    <section>
+      <h2 id="housekeeping">Housekeeping</h2>
+      <ul>
+        <li>Clean up your project deps</li>
+        <li>Add <code>:pedantic? :warn</code> to your <code>project.clj</code></li>
+        <li>Require your log lib early</li>
+        <li>Exclude others</li>
+      </ul>
+      <aside class="notes">You should make sure that the logging library that you choose is the
+        one
+        that you use. Be careful of t'others on the classpath, maybe even exclude them.
+        They have a nasty habit of having class-loading side-effects.
+      </aside>
+    </section>
+    <section>
+      <h2 id="properties-files">Properties files</h2>
+      <p>I can't remember the settings</p>
+      <aside class="notes">Hands up who would be able to write a properties file for one of
+        these?
+
+        We shouldn't have to go peer into the documentation.
+
+        I don't remember the exact settings that I need to get these libraries
+        to work.
+
+        Usually, I'll search online, read through two pages of documentation,
+        maybe a bit of stack overflow.
+
+        Copy-paste.
+
+        Run.
+
+        Repeat.
+
+        Good enough...
+      </aside>
+    </section>
+    <section>
+      <h2 id="r-pl">R∞PL</h2>
+      <ul>
+        <li>Check the docs</li>
+        <li>Write some config</li>
+        <li>Try it</li>
+        <li>Give up</li>
+      </ul>
+      <aside class="notes"></aside>
+    </section>
+    <section>
+      <h2 id="stdout">STDOUT</h2>
+      <p><img src="images/ops-problem.jpg"></p>
+      <aside class="notes">Containers? Lucky you!
+
+        This follows the 12-factor app approach; don't try to do too much in
+        your app. It shouldn't be responsible for rolling files; just dumping
+        data.
+
+        It is adding complexity into the configuration.
+        Just push all the logs and let something else deal with them. (Ops!)
+        It is easier for your downstream system to deal with the logs by filtering than by adding even more
+        logic into
+        the configuration.
+
+        Even if you are not using the latest tech, if the logs just sit there, then they can begin to lose
+        value.
+        Getting them off the node into something usable (Elastic) will pay dividends
+
+        If your app suffers a fatal exception, by logging to stdout means you might still get your logs.
+      </aside>
+    </section>
+    <section>
+      <h2 id="clojure-tools-logging">Clojure.tools.logging</h2>
+      <p>Abstraction over the abstraction</p>
+      <p>🐢all the way down</p>
+
+      <p><a href="https://github.com/clojure/tools.logging"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/clojure/tools.logging</a></p>
+      <aside class="notes">If you are going to use one of the main Java libs then use CTLogging
+        to abstract over it.
+
+        You get macros that won't evaluate the body.
+      </aside>
+    </section>
+    <section>
+      <h2 id="macro-magic">Macro magic</h2>
+      <pre><code>(log/debug (heavy-computation))</code></pre>
+      <aside class="notes">CTLogging is great because it provides macros for logging, if the log
+        level is not on, then the heavy computation will not happen.
+
+        There is also the <code>spy</code> option to trace and return a value if you
+        want.
+
+        Great for tracing.
+      </aside>
+    </section>
+    <section>
+      <h2 id="code-data">Code ⇋ Data</h2>
+      <aside class="notes">Having to reload the application to test if your configuration works
+        is bad
+
+        There is the disconnect between the two (how the property file is compiled into running code)
+
+        Resource files are terrible. Do you know <em>all</em> of the resource files in your classpath?
+
+        <em> Do you really want to write XML files to define your logging?
+        </em> Probably not.
+
+        These logging solutions keep the final logic at arm's length from the
+        running code.
+
+        For most aspects of Clojure, we like to have the data closer so that
+        we can do great things with it.
+      </aside>
+    </section>
+    <section>
+      <h2 id="timbre">Timbre</h2>
+      <p>If you haven't invested in your logging, try this</p>
+      <ul>
+        <li>It works</li>
+        <li>(relatively) sensible defaults</li>
+        <li>Compile-time elision</li>
+        <li>CLJS too FTW</li>
+        <li>It's all code</li>
+      </ul>
+      <p><a href="https://github.com/ptaoussanis/timbre"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/ptaoussanis/timbre</a>
+      </p>
+    </section>
+    <section>
+      <h2 id="timbre-example">Timbre example</h2>
+      <p>Just <code>log/debug</code> and it is ready to go</p>
+    </section>
+    <section>
+      <h2 id="project-clj">project.clj</h2>
+<pre><code>[com.taoensso/timbre "4.7.4"]
+</code></pre>
+      <p>will pull in:</p>
+<pre><code>[com.taoensso/timbre "4.7.4"]
+   [com.taoensso/encore "2.79.1"]
+     [com.taoensso/truss "1.3.5"]
+   [io.aviso/pretty "0.1.30"]
+</code></pre>
+      <p>... and that's all folks</p>
+      <aside class="notes"></aside>
+    </section>
+    <section>
+      <h2 id="configuring-timbre">Configuring timbre</h2>
+      <ul>
+        <li>It's a map</li>
+        <li>Rather obvious</li>
+        <li>You can experiment at the REPL</li>
+      </ul>
+    </section>
+    <section id="set-level">
+      <h2>Setting the log level</h2>
+      <pre><code>
+TIMBRE_LEVEL=':info' lein run
+TIMBRE_LEVEL=':info' lein compile
+TIMBRE_NS_WHITELIST='["*"]'
+TIMBRE_NS_BLACKLIST='["ns.heavy-comp"]'
+      </code></pre>
+    </section>
+    <section>
+      <h2 id="configuring-for-json">Configuring for JSON</h2>
+<pre class="stretch lang-clojure hljs"><code>
+{:timestamp-opts {:pattern  "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" :locale :jvm-default :timezone :utc}
+ :output-fn      (fn [data]
+                   (let [{:keys [level ?err vargs ?ns-str hostname_
+                                 timestamp_ ?line]} data]
+                     (json/generate-string
+                       {:timestamp (force timestamp_)
+                        :hostname  (force hostname_)
+                        :level     (str/upper-case (name level))
+                        :ns        (or ?ns-str "?")
+                        :line      (or ?line "?")
+                        :version   "1234"
+                        :message   (->> (force vargs)
+                                        (map-indexed (fn [i m]
+                                                       (if (map? m)
+                                                         m
+                                                         {(str "key-" i) m})))
+                                        (apply merge))
+                        :error     (when-let [err ?err]
+                                     (binding [ex/*fonts* nil]
+                                       (ex/analyze-exception (force err) nil)))})))
+ :middleware     [clean-keys]}
+</code></pre>
+    </section>
+    <section>
+      <h2 id="sensitive-keys">Sensitive keys</h2>
+      <p>I don't mean log <em>all</em> the things</p>
+<pre><code>(def sensitive-keys #{:password
+                      :aws-secret-access-key
+                      :aws-access-key-id})
+
+(defn clean-keys [m]
+  (postwalk (fn [node]
+    (if (map? node)
+      (apply dissoc node sensitive-keys)
+      node))
+    m))
+</code></pre>
+
+      <p>You can use this as <code>:middleware</code> in Timbre</p>
+      <aside class="notes"></aside>
+    </section>
+    <section>
+      <h2 id="json-in-json">JSON in JSON</h2>
+      <p><img src="images/stylus.png" alt=""></p>
+      <aside class="notes">If you are structuring your log messages as JSON. Be careful about the
+        inception-like
+        JSON-in-JSON.
+
+
+        again, with Timbre, or any option where you control the full output,
+        you can walk the data structure before output. Any vals that will
+        contain JSON, just parse out.
+
+        If you control the entire output phase, then you shouldn't have this issue.
+      </aside>
+    </section>
+    <section>
+      <h2 id="simple">Simple</h2>
+      <img src="images/juxt-w.png" style="box-shadow: none; border: none"/>
+      <p><a href="https://juxt.pro/blog/posts/logging.html">https://juxt.pro/blog/posts/logging.html</a></p>
+
+      <aside class="notes">
+        <p>So, recently a more stylish JUXTer posted about logging and how to do it. I recommend that you read
+          it.</p>
+        <p>He pointed to a very simple solution for logging -- you don't need to use a library.</p>
+        <p>If all you care about is leaving a good trail of data, you can just write your own simple logging
+          function.</p>
+      </aside>
+    </section>
+    <section>
+      <h2 id="just-a-string">Just a string</h2>
+      <pre><code>
+        (defn log [data]
+          (print (str (json/generate-string data) \newline)))
+      </code></pre>
+      <p><code>println</code> is not atomic</p>
+      <p><a href="http://yellerapp.com/posts/2014-12-11-14-race-condition-in-clojure-println.html">http://yellerapp.com/posts/2014-12-11-14-race-condition-in-clojure-println.html</a></p>
+    </section>
+    <section>
+      <h2>Log all the things</h2>
+      <ul>
+        <li>You decide the format</li>
+        <li>Simplify your logs</li>
+        <li>You have spare CPU</li>
+        <li>Log events, not just data</li>
+        <li>Annotate your messages</li>
+        <li>It will make your life easier</li>
+      </ul>
+    </section>
+    <section id="links">
+      <span style="text-align: left">
+        <p><a href="https://davidjameshumphreys.github.io/demos/log-all/"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/davidjameshumphreys/demos/log-all</a></p>
+        <p><a href="https://github.com/michaeltandy/log4j-json"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/michaeltandy/log4j-json</a></p>
+        <p><a href="https://github.com/logstash/logstash-logback-encoder"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/logstash/logstash-logback-encoder</a></p>
+        <p><a href="https://github.com/AvisoNovate/pretty"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/AvisoNovate/pretty</a>
+        <p><a href="https://github.com/clojure/tools.logging"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/clojure/tools.logging</a></p>
+        <p><a href="https://github.com/ptaoussanis/timbre"><span class="octicon octicon-mark-github" style="font-family: 'octicons';"></span>/ptaoussanis/timbre</a>
+        <p><a href="https://juxt.pro/blog/posts/logging.html">https://juxt.pro/blog/posts/logging.html</a></p>
+        <p><a href="http://yellerapp.com/posts/2014-12-11-14-race-condition-in-clojure-println.html">http://yellerapp.com/posts/2014-12-11-14-race-condition-in-clojure-println.html</a></p></span>
+    </section>
+  </div>
+
+  <!--This is only visible after the title slide see code hideOnIndexSlide below-->
+  <div class='footer'>
+    <small><a href="https://davidjameshumphreys.github.io/demos/log-all/"><span class="octicon octicon-mark-github"
+                                                                                style="font-family: 'octicons';"></span>/davidjameshumphreys/demos/log-all</a>
+    </small>
+  </div>
+</div>
+
+<script src="js/lib/head.min.js"></script>
+<script src="js/reveal.js"></script>
+<script>
+  var isMD = function () {
+    return !!document.querySelector('[data-markdown]');
+  };
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    mouseWheel: false,
+    transition: 'slide',
+
+    dependencies: [
+      {
+        src: './js/lib/classList.js', condition: function () {
+        return !document.body.classList;
+      }
+      },
+      {
+        src: './js/plugin/highlight/highlight.js', async: true, condition: function () {
+        return !!document.querySelector('pre code');
+      },
+        callback: function () {
+          hljs.configure({languages: ['clojure']});
+          hljs.initHighlightingOnLoad();
+        }
+      },
+      {src: './js/plugin/zoom-js/zoom.js', async: true},
+      {src: './js/plugin/notes/notes.js', async: true}
+    ]
+  });
+
+  /** Hide the logo footer when on the start slide only.
+   * @param event the Reveal event
+   */
+  var hideOnIndexSlide = function (event) {
+    document.querySelector('.reveal .footer').style.display = ((event.indexh == 0) && (event.indexv == 0)) ? 'none' : 'block';
+  };
+
+  Reveal.addEventListener('ready', hideOnIndexSlide);
+  Reveal.addEventListener('slidechanged', hideOnIndexSlide);
+</script>
+</body>
+</html>
